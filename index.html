@@ -133,7 +133,7 @@
         .info-label { font-size: 0.75rem; color: #bbb; letter-spacing: 4px; margin-bottom: 12px; display: block; }
         .info-content { font-size: 1.1rem; font-weight: 300; color: var(--text-muted); line-height: 2; }
 
-        /* 時間列表樣式優化 - 增加間距 */
+        /* 時間列表樣式 */
         .time-list {
             display: flex;
             flex-direction: column;
@@ -145,7 +145,7 @@
             letter-spacing: 1px;
         }
 
-        /* 穿著建議樣式優化 */
+        /* 穿著建議樣式 */
         .dress-code-list {
             display: inline-block;
             text-align: left;
@@ -209,7 +209,7 @@
         .rsvp-section { padding: 80px 20px 40px; max-width: 550px; margin: 0 auto; }
         .form-group { margin-bottom: 45px; }
         .label-zh { font-size: 1.1rem; font-weight: 500; display: block; margin-bottom: 10px; color: var(--text-dark); }
-        .form-note { font-size: 0.85rem; color: #888; margin-bottom: 15px; display: block; font-weight: 300; line-height: 1.5; white-space: pre-line; }
+        .form-note { font-size: 0.85rem; color: #888; margin-bottom: 15px; display: block; font-weight: 300; line-height: 1.6; white-space: pre-line; }
 
         input[type="text"], input[type="email"], input[type="tel"], select, textarea {
             width: 100%;
@@ -380,12 +380,12 @@
                 <span class="info-label" style="text-align:center; margin-bottom:25px;">TRANSPORTATION 交通資訊</span>
                 <span class="sub-title">自行開車</span>
                 <p>
-                    國1南下 – 南屯交流道 181K 出口轉台 74 線 30 分鐘可達<br>
+                    國1南下 – 南屯交流道 181K 出口轉 台 74 線 30 分鐘可達<br>
                     國1北上 – 埔鹽系統交流道 207K 出口轉 146 縣道 40 分鐘可達
                 </p>
                 <p>
-                    國3南下 – 快官交流道 202K 出口轉台 74 線 25 分鐘可達<br>
-                    國3北上 – 中興系統交流道 222K 出口轉台 76 線，下林厝交流道接 137 縣道 25 分鐘可達
+                    國3南下 – 快官交流道 202K 出口轉 台 74 線 25 分鐘可達<br>
+                    國3北上 – 中興系統交流道 222K 出口轉 台 76 線，下林厝交流道接 137 縣道 25 分鐘可達
                 </p>
                 <p style="margin-top: -15px; margin-bottom: 25px; border-bottom: 1px dashed #eee; padding-bottom: 20px;">
                     <span style="color:var(--text-muted); font-size: 0.85rem; font-weight:400;">* 現場備有停車空間及球車接駁可供使用</span>
@@ -395,7 +395,7 @@
                 <span class="sub-title">搭乘台鐵</span>
                 <p>請搭至員林站或大村站，轉乘計程車，車程約 15 分鐘可抵達。</p>
                 <p style="margin-top: 10px; border-top: 1px dashed #eee; padding-top: 20px;">
-                    <span style="color:var(--theme-gold-dark); font-weight:500;">* 本場婚禮提供接駁車服務：去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
+                    <span style="color:var(--theme-gold-dark); font-weight:500;">* 本場婚禮提供接駁車服務：<br>去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
                 </p>
             </div>
         </div>
@@ -486,7 +486,7 @@
 
             <div class="form-group">
                 <label class="label-zh">是否參加證婚儀式</label>
-                <span class="form-note">證婚儀式11:00開始 / 11:30午宴入場 / 12:00準時開席
+                <span class="form-note">證婚儀式 11:00開始 / 11:30午宴入場 / 12:00準時開席
                 證婚席次有限，每一個座位都十分珍貴，期待與您相見</span>
                 <select name="entry.1913773160" required>
                     <option value="" disabled selected>請選擇</option>
@@ -506,9 +506,8 @@
 
             <div class="form-group">
                 <label class="label-zh">接駁服務</label>
-                <span class="form-note">本場婚禮提供接駁車服務：
-                去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，
-                回程亦統一由會場返回台中高鐵站</span>
+                <span class="form-note">* 本場婚禮提供接駁車服務：
+                去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
                 <select name="entry.526077584" required>
                     <option value="" disabled selected>是否需要接駁</option>
                     <option value="需要">需要</option>
@@ -533,7 +532,7 @@
 
             <div class="form-group">
                 <label class="label-zh">想對新人說的話</label>
-                <textarea name="entry.1247634943" rows="4" placeholder="給予我們最溫嫩的祝福..."></textarea>
+                <textarea name="entry.1247634943" rows="4" placeholder="給予我們最暖心的祝福..."></textarea>
             </div>
 
             <div class="form-footer-image">
@@ -582,9 +581,16 @@
 
         function toggleAddress() {
             const val = document.getElementById('invitationNeed').value;
-            const needsAddress = (val === '需要，我想收藏這份喜悅 🤍');
-            document.getElementById('addressField').style.display = needsAddress ? 'block' : 'none';
-            document.getElementById('addressInput').required = needsAddress;
+            const addressField = document.getElementById('addressField');
+            const addressInput = document.getElementById('addressInput');
+            
+            if (val && val.includes('需要，我想收藏')) {
+                addressField.style.display = 'block';
+                addressInput.required = true;
+            } else {
+                addressField.style.display = 'none';
+                addressInput.required = false;
+            }
         }
 
         const rsvpForm = document.getElementById('rsvpForm');
