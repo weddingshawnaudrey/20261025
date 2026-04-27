@@ -133,6 +133,34 @@
         .info-label { font-size: 0.75rem; color: #bbb; letter-spacing: 4px; margin-bottom: 12px; display: block; }
         .info-content { font-size: 1.1rem; font-weight: 300; color: var(--text-muted); line-height: 2; }
 
+        /* 時間列表樣式優化 - 增加間距 */
+        .time-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            margin-top: 0.8rem;
+        }
+        .time-list span {
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        /* 穿著建議樣式優化 */
+        .dress-code-list {
+            display: inline-block;
+            text-align: left;
+            margin: 0 auto;
+        }
+        .dress-code-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .dress-code-row b {
+            min-width: 3.5rem;
+            font-weight: 500;
+        }
+
         /* Google Maps 連結樣式 */
         .map-link {
             display: inline-flex;
@@ -204,7 +232,6 @@
         }
         input:focus, select:focus { border-bottom-color: var(--theme-gold); }
 
-        /* 照片比例維持 2:1 (16:8) */
         .form-footer-image {
             width: 100%;
             margin: 10px 0 30px; 
@@ -243,15 +270,6 @@
         .submit-btn:hover { background: #bdb49b; transform: translateY(-2px); }
         .submit-btn:disabled { background: #ccc; box-shadow: none; cursor: default; }
 
-        .wait-text {
-            color: var(--theme-gold-dark); 
-            letter-spacing: 3px; 
-            margin-bottom: 10px; 
-            font-size: 0.95rem;
-            font-weight: 500;
-            display: block;
-        }
-
         /* 成功畫面 */
         #successModal {
             display:none; 
@@ -288,28 +306,6 @@
             line-height: 2;
             font-size: 1rem;
         }
-        .success-divider {
-            width: 40px;
-            height: 1px;
-            background: var(--theme-gold);
-            margin: 30px auto;
-        }
-        .back-home-btn {
-            margin-top: 40px;
-            background: none;
-            border: 1px solid var(--theme-gold);
-            color: var(--theme-gold-dark);
-            padding: 12px 30px;
-            letter-spacing: 2px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: inherit;
-        }
-        .back-home-btn:hover {
-            background: var(--theme-gold);
-            color: #fff;
-        }
     </style>
 </head>
 <body id="top">
@@ -344,9 +340,11 @@
             <div class="info-item">
                 <span class="info-label">TIME</span>
                 <div class="info-content">
-                    11:00 證婚儀式<br><br>
-                    11:30 午宴入席<br><br>
-                    12:00 準時開席
+                    <div class="time-list">
+                        <span>11:00&nbsp;&nbsp;&nbsp;&nbsp;證婚儀式</span>
+                        <span>11:30&nbsp;&nbsp;&nbsp;&nbsp;午宴入席</span>
+                        <span>12:00&nbsp;&nbsp;&nbsp;&nbsp;準時開席</span>
+                    </div>
                 </div>
             </div>
             <div class="info-item">
@@ -356,15 +354,17 @@
                     <span style="font-size: 0.9rem; color: #999; margin-top: 10px; display: block;">彰化縣大村鄉福興村學府路77號</span>
                     <a href="https://maps.app.goo.gl/Vg7DMU5AksgUE2M8A" target="_blank" class="map-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        Google Maps 導覽
+                        Google Maps 地圖
                     </a>
                 </div>
             </div>
             <div class="info-item">
                 <span class="info-label">DRESS CODE</span>
                 <div class="info-content">
-                    男士 &nbsp;&nbsp;&nbsp;&nbsp; 襯衫 或 西裝<br>
-                    女士 &nbsp;&nbsp;&nbsp;&nbsp; 小禮服 或 正裝
+                    <div class="dress-code-list">
+                        <div class="dress-code-row"><b>男士</b> 襯衫 或 西裝</div>
+                        <div class="dress-code-row"><b>女士</b> 小禮服 或 正裝</div>
+                    </div>
                     <div class="color-palette">
                         <div class="color-circle" style="background: #E8E2D6;"></div>
                         <div class="color-circle" style="background: #D8C8B8;"></div>
@@ -381,20 +381,21 @@
                 <span class="sub-title">自行開車</span>
                 <p>
                     國1南下 – 南屯交流道 181K 出口轉台 74 線 30 分鐘可達<br>
-                    國1北上 – 埔鹽系統交流道 207K 出口轉 146 縣道 40 分鐘可達<br>
+                    國1北上 – 埔鹽系統交流道 207K 出口轉 146 縣道 40 分鐘可達
+                </p>
+                <p>
                     國3南下 – 快官交流道 202K 出口轉台 74 線 25 分鐘可達<br>
                     國3北上 – 中興系統交流道 222K 出口轉台 76 線，下林厝交流道接 137 縣道 25 分鐘可達
                 </p>
                 <p style="margin-top: -15px; margin-bottom: 25px; border-bottom: 1px dashed #eee; padding-bottom: 20px;">
-                    <span style="color:var(--text-muted); font-size: 0.85rem; font-weight:400;">* 現場備有停車空間及球車接駁可供使用。</span>
+                    <span style="color:var(--text-muted); font-size: 0.85rem; font-weight:400;">* 現場備有停車空間及球車接駁可供使用</span>
                 </p>
                 <span class="sub-title">搭乘高鐵</span>
-                <p>請搭至台中站，可轉乘計程車或自行開車前往。<br>
-                台中站距離球場約 20 KM，車程約 30 分鐘可抵達。</p>
+                <p>請搭至台中站，轉乘計程車，車程約 30 分鐘可抵達。</p>
                 <span class="sub-title">搭乘台鐵</span>
-                <p>請搭至員林站或大村站，轉乘計程車車程約 15 分鐘可抵達。</p>
+                <p>請搭至員林站或大村站，轉乘計程車，車程約 15 分鐘可抵達。</p>
                 <p style="margin-top: 10px; border-top: 1px dashed #eee; padding-top: 20px;">
-                    <span style="color:var(--theme-gold-dark); font-weight:500;">* 為方便賓客往返，我們提供定時定點接駁服務（台中高鐵站 ⇄ 婚禮會場），請於下方表單協助勾選統計。</span>
+                    <span style="color:var(--theme-gold-dark); font-weight:500;">* 本場婚禮提供接駁車服務：去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
                 </p>
             </div>
         </div>
@@ -463,7 +464,6 @@
 
             <div class="form-group">
                 <label class="label-zh">位上主餐 (賓客 1：本人)</label>
-                <!-- 更新備註 1 -->
                 <span class="form-note">午宴將以西式長桌呈現，主餐備有三種選擇，請為自己選一份主餐</span>
                 <select name="entry.820210132" required>
                     <option value="" disabled selected>請選擇主餐</option>
@@ -475,7 +475,6 @@
 
             <div class="form-group" id="guest2Meal" style="display:none;">
                 <label class="label-zh">位上主餐 (賓客 2：同行者)</label>
-                <!-- 更新備註 2 -->
                 <span class="form-note">午宴將以西式長桌呈現，主餐備有三種選擇，請為同行者選一份主餐</span>
                 <select name="entry.47290452" id="compMeal">
                     <option value="" disabled selected>請選擇主餐</option>
@@ -487,9 +486,8 @@
 
             <div class="form-group">
                 <label class="label-zh">是否參加證婚儀式</label>
-                <!-- 更新備註 3 -->
                 <span class="form-note">證婚儀式11:00開始 / 11:30午宴入場 / 12:00準時開席
-                因證婚席次有限，每一個座位都十分珍貴，期待與您相見</span>
+                證婚席次有限，每一個座位都十分珍貴，期待與您相見</span>
                 <select name="entry.1913773160" required>
                     <option value="" disabled selected>請選擇</option>
                     <option value="是">是</option>
@@ -508,7 +506,6 @@
 
             <div class="form-group">
                 <label class="label-zh">接駁服務</label>
-                <!-- 更新備註 4 -->
                 <span class="form-note">本場婚禮提供接駁車服務：
                 去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，
                 回程亦統一由會場返回台中高鐵站</span>
@@ -536,7 +533,7 @@
 
             <div class="form-group">
                 <label class="label-zh">想對新人說的話</label>
-                <textarea name="entry.1247634943" rows="4" placeholder="給予我們最溫暖的祝福..."></textarea>
+                <textarea name="entry.1247634943" rows="4" placeholder="給予我們最溫嫩的祝福..."></textarea>
             </div>
 
             <div class="form-footer-image">
@@ -544,7 +541,7 @@
             </div>
 
             <div class="submit-container">
-                <span class="wait-text">期待婚禮當天與您相見</span>
+                <span style="color: var(--theme-gold-dark); letter-spacing: 3px; margin-bottom: 10px; font-size: 0.95rem; font-weight: 500; display: block;">期待婚禮當天與您相見</span>
                 <button type="submit" class="submit-btn" id="submitBtn">送出回覆</button>
             </div>
         </form>
@@ -553,10 +550,10 @@
     <div id="successModal">
         <div class="success-content">
             <h2 class="en-font">Thank You</h2>
-            <div class="success-divider"></div>
+            <div style="width: 40px; height: 1px; background: var(--theme-gold); margin: 30px auto;"></div>
             <p>我們已收到您的出席回覆<br>感謝您的祝福與配合</p>
             <p style="margin-top: 10px; font-weight: 500; color: var(--theme-gold-dark);">期待與您見面！</p>
-            <button class="back-home-btn" onclick="backToHome()">返回首頁</button>
+            <button style="margin-top: 40px; background: none; border: 1px solid var(--theme-gold); color: var(--theme-gold-dark); padding: 12px 30px; letter-spacing: 2px; font-size: 0.85rem; cursor: pointer; transition: 0.3s; font-family: inherit;" onclick="backToHome()">返回首頁</button>
         </div>
     </div>
 
@@ -585,7 +582,7 @@
 
         function toggleAddress() {
             const val = document.getElementById('invitationNeed').value;
-            const needsAddress = (val === '協助提供，我想收藏這份喜悅 🤍' || val === '需要，我想收藏這份喜悅 🤍');
+            const needsAddress = (val === '需要，我想收藏這份喜悅 🤍');
             document.getElementById('addressField').style.display = needsAddress ? 'block' : 'none';
             document.getElementById('addressInput').required = needsAddress;
         }
