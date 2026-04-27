@@ -16,6 +16,7 @@
             --text-muted: #777777;
             --bg-cream: #faf9f6;
             --soft-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --error-red: #d9534f;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -207,8 +208,14 @@
 
         /* RSVP 表單 */
         .rsvp-section { padding: 80px 20px 40px; max-width: 550px; margin: 0 auto; }
-        .form-group { margin-bottom: 45px; }
+        .form-group { margin-bottom: 45px; position: relative; }
         .label-zh { font-size: 1.1rem; font-weight: 500; display: block; margin-bottom: 10px; color: var(--text-dark); }
+        .label-zh.required::after {
+            content: "*";
+            color: var(--theme-gold-dark);
+            margin-left: 5px;
+            font-family: sans-serif;
+        }
         .form-note { font-size: 0.85rem; color: #888; margin-bottom: 15px; display: block; font-weight: 300; line-height: 1.6; white-space: pre-line; }
 
         input[type="text"], input[type="email"], input[type="tel"], select, textarea {
@@ -231,6 +238,14 @@
             background-position: right 5px center;
         }
         input:focus, select:focus { border-bottom-color: var(--theme-gold); }
+        
+        /* 錯誤提示文字樣式 */
+        .error-msg {
+            color: var(--error-red);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
 
         .form-footer-image {
             width: 100%;
@@ -305,6 +320,43 @@
             letter-spacing: 3px;
             line-height: 2;
             font-size: 1rem;
+        }
+
+        /* 警示語彈窗樣式 */
+        #alertModal {
+            display:none; 
+            position:fixed; 
+            top:0; 
+            left:0; 
+            width:100%; 
+            height:100%; 
+            background: rgba(0,0,0,0.4);
+            z-index: 3000; 
+            justify-content: center; 
+            align-items: center;
+            padding: 20px;
+        }
+        .alert-box {
+            background: #fff;
+            padding: 40px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .alert-box p {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+        .alert-btn {
+            background: var(--theme-gold);
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 2px;
         }
     </style>
 </head>
@@ -409,10 +461,11 @@
 
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         
-        <form id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdqZuBPxvXLLvMBZEtBMBZyAfOYlPlxew1-U4BZEdhgg49Zag/formResponse" method="POST" target="hidden_iframe">
+        <!-- 新增 novalidate 以使用自定義警示邏輯 -->
+        <form id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdqZuBPxvXLLvMBZEtBMBZyAfOYlPlxew1-U4BZEdhgg49Zag/formResponse" method="POST" target="hidden_iframe" novalidate>
             
             <div class="form-group">
-                <label class="label-zh">中文全名</label>
+                <label class="label-zh required">中文全名</label>
                 <input type="text" name="entry.1463939948" required>
             </div>
 
@@ -423,17 +476,17 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">電子郵件</label>
+                <label class="label-zh required">電子郵件</label>
                 <input type="email" name="entry.555492706" required>
             </div>
 
             <div class="form-group">
-                <label class="label-zh">聯絡電話</label>
+                <label class="label-zh required">聯絡電話</label>
                 <input type="tel" name="entry.1900076943" required>
             </div>
 
             <div class="form-group">
-                <label class="label-zh">與新人關係</label>
+                <label class="label-zh required">與新人關係</label>
                 <select name="entry.410821782" required>
                     <option value="" disabled selected>請選擇您的關係</option>
                     <option value="男方親友">男方親友</option>
@@ -442,7 +495,7 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">出席人數</label>
+                <label class="label-zh required">出席人數</label>
                 <select name="entry.1590771060" id="guestCount" onchange="toggleGuest()" required>
                     <option value="" disabled selected>請選擇</option>
                     <option value="一位">一位</option>
@@ -452,7 +505,7 @@
 
             <div id="companionFields" style="display:none;">
                 <div class="form-group">
-                    <label class="label-zh">同行者中文全名</label>
+                    <label class="label-zh required" id="compNameLabel">同行者中文全名</label>
                     <input type="text" name="entry.1091439580" id="compName">
                 </div>
                 <div class="form-group">
@@ -463,7 +516,7 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">位上主餐 (賓客 1：本人)</label>
+                <label class="label-zh required">位上主餐 (賓客 1：本人)</label>
                 <span class="form-note">午宴將以西式長桌呈現，主餐備有三種選擇，請為自己選一份主餐</span>
                 <select name="entry.820210132" required>
                     <option value="" disabled selected>請選擇主餐</option>
@@ -474,7 +527,7 @@
             </div>
 
             <div class="form-group" id="guest2Meal" style="display:none;">
-                <label class="label-zh">位上主餐 (賓客 2：同行者)</label>
+                <label class="label-zh required" id="compMealLabel">位上主餐 (賓客 2：同行者)</label>
                 <span class="form-note">午宴將以西式長桌呈現，主餐備有三種選擇，請為同行者選一份主餐</span>
                 <select name="entry.47290452" id="compMeal">
                     <option value="" disabled selected>請選擇主餐</option>
@@ -485,7 +538,7 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">是否參加證婚儀式</label>
+                <label class="label-zh required">是否參加證婚儀式</label>
                 <span class="form-note">證婚儀式 11:00開始 / 11:30午宴入場 / 12:00準時開席
                 證婚席次有限，每一個座位都十分珍貴，期待與您相見</span>
                 <select name="entry.1913773160" required>
@@ -496,7 +549,7 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">交通方式</label>
+                <label class="label-zh required">交通方式</label>
                 <select name="entry.831094475" required>
                     <option value="" disabled selected>請選擇交通方式</option>
                     <option value="自行開車前往 (現場備有停車空間及球車接駁可供使用)">自行開車前往 (現場備有停車空間及球車接駁可供使用)</option>
@@ -505,7 +558,7 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">接駁服務</label>
+                <label class="label-zh required">接駁服務</label>
                 <span class="form-note">* 本場婚禮提供接駁車服務：
                 去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
                 <select name="entry.526077584" required>
@@ -516,7 +569,7 @@
             </div>
 
             <div class="form-group">
-                <label class="label-zh">是否需要紙本喜帖</label>
+                <label class="label-zh required">是否需要紙本喜帖</label>
                 <select name="entry.1115053950" id="invitationNeed" onchange="toggleAddress()" required>
                     <option value="" disabled selected>請選擇您的偏好</option>
                     <option value="需要，我想收藏這份喜悅 🤍">需要，我想收藏這份喜悅 🤍</option>
@@ -525,7 +578,7 @@
             </div>
 
             <div class="form-group" id="addressField" style="display:none;">
-                <label class="label-zh">寄件地址</label>
+                <label class="label-zh required" id="addressLabel">寄件地址</label>
                 <span class="form-note">如需要紙本喜帖，請提供寄件地址</span>
                 <input type="text" name="entry.1441020885" id="addressInput">
             </div>
@@ -545,6 +598,14 @@
             </div>
         </form>
     </section>
+
+    <!-- 自定義警示彈窗 -->
+    <div id="alertModal">
+        <div class="alert-box">
+            <p id="alertMsg">請填寫所有必填項目</p>
+            <button class="alert-btn" onclick="closeAlert()">好的</button>
+        </div>
+    </div>
 
     <div id="successModal">
         <div class="success-content">
@@ -575,21 +636,38 @@
             const isTwo = (val === '兩位');
             document.getElementById('companionFields').style.display = isTwo ? 'block' : 'none';
             document.getElementById('guest2Meal').style.display = isTwo ? 'block' : 'none';
-            document.getElementById('compName').required = isTwo;
-            document.getElementById('compMeal').required = isTwo;
+            
+            const compName = document.getElementById('compName');
+            const compMeal = document.getElementById('compMeal');
+            const compNameLabel = document.getElementById('compNameLabel');
+            const compMealLabel = document.getElementById('compMealLabel');
+
+            compName.required = isTwo;
+            compMeal.required = isTwo;
+            
+            if (isTwo) {
+                compNameLabel.classList.add('required');
+                compMealLabel.classList.add('required');
+            } else {
+                compNameLabel.classList.remove('required');
+                compMealLabel.classList.remove('required');
+            }
         }
 
         function toggleAddress() {
             const val = document.getElementById('invitationNeed').value;
             const addressField = document.getElementById('addressField');
             const addressInput = document.getElementById('addressInput');
+            const addressLabel = document.getElementById('addressLabel');
             
             if (val && val.includes('需要，我想收藏')) {
                 addressField.style.display = 'block';
                 addressInput.required = true;
+                addressLabel.classList.add('required');
             } else {
                 addressField.style.display = 'none';
                 addressInput.required = false;
+                addressLabel.classList.remove('required');
             }
         }
 
@@ -598,11 +676,40 @@
         const iframe = document.getElementById('hidden_iframe');
 
         rsvpForm.addEventListener('submit', function(e) {
+            // 檢查必填項
+            const requiredInputs = rsvpForm.querySelectorAll('[required]');
+            let firstInvalid = null;
+
+            requiredInputs.forEach(input => {
+                if (!input.value || input.value.trim() === "") {
+                    if (!firstInvalid) firstInvalid = input;
+                }
+            });
+
+            if (firstInvalid) {
+                e.preventDefault(); // 阻止送出
+                showAlert("請填寫所有必填項目（標示星號 * 之欄位）");
+                firstInvalid.focus();
+                // 稍微滾動讓使用者看到
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return false;
+            }
+
+            // 通過檢查，開始送出
             submitBtn.disabled = true;
             submitBtn.innerText = '傳送中...';
             iframe.onload = function() { showSuccess(); };
             setTimeout(() => { if (submitBtn.disabled) showSuccess(); }, 5000);
         });
+
+        function showAlert(msg) {
+            document.getElementById('alertMsg').innerText = msg;
+            document.getElementById('alertModal').style.display = 'flex';
+        }
+
+        function closeAlert() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
 
         function showSuccess() {
             const modal = document.getElementById('successModal');
