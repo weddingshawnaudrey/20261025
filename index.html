@@ -239,14 +239,6 @@
         }
         input:focus, select:focus { border-bottom-color: var(--theme-gold); }
         
-        /* 錯誤提示文字樣式 */
-        .error-msg {
-            color: var(--error-red);
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: none;
-        }
-
         .form-footer-image {
             width: 100%;
             margin: 10px 0 30px; 
@@ -338,26 +330,33 @@
         }
         .alert-box {
             background: #fff;
-            padding: 40px;
+            padding: 45px 40px;
             text-align: center;
             max-width: 320px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 2px;
         }
         .alert-box p {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text-dark);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             letter-spacing: 1px;
+            line-height: 1.8;
+            white-space: pre-line;
+            text-align: center;
         }
         .alert-btn {
             background: var(--theme-gold);
             color: #fff;
             border: none;
-            padding: 10px 30px;
+            padding: 12px 45px;
             cursor: pointer;
             font-family: inherit;
-            letter-spacing: 2px;
+            letter-spacing: 6px;
+            font-size: 0.95rem;
+            transition: background 0.3s;
         }
+        .alert-btn:hover { background: var(--theme-gold-dark); }
     </style>
 </head>
 <body id="top">
@@ -447,7 +446,11 @@
                 <span class="sub-title">搭乘台鐵</span>
                 <p>請搭至員林站或大村站，轉乘計程車，車程約 15 分鐘可抵達。</p>
                 <p style="margin-top: 10px; border-top: 1px dashed #eee; padding-top: 20px;">
-                    <span style="color:var(--theme-gold-dark); font-weight:500;">* 本場婚禮提供接駁車服務：<br>去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
+                    <span style="color:var(--theme-gold-dark); font-weight:500;">
+                        * 本場婚禮提供接駁車服務：<br>
+                        去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場；<br>
+                        回程亦統一由會場返回台中高鐵站
+                    </span>
                 </p>
             </div>
         </div>
@@ -461,7 +464,6 @@
 
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         
-        <!-- 新增 novalidate 以使用自定義警示邏輯 -->
         <form id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdqZuBPxvXLLvMBZEtBMBZyAfOYlPlxew1-U4BZEdhgg49Zag/formResponse" method="POST" target="hidden_iframe" novalidate>
             
             <div class="form-group">
@@ -560,7 +562,8 @@
             <div class="form-group">
                 <label class="label-zh required">接駁服務</label>
                 <span class="form-note">* 本場婚禮提供接駁車服務：
-                去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場，回程亦統一由會場返回台中高鐵站</span>
+                去程統一時間自「台中高鐵站」出發前往台豐高爾夫球場；
+                回程亦統一由會場返回台中高鐵站</span>
                 <select name="entry.526077584" required>
                     <option value="" disabled selected>是否需要接駁</option>
                     <option value="需要">需要</option>
@@ -602,8 +605,8 @@
     <!-- 自定義警示彈窗 -->
     <div id="alertModal">
         <div class="alert-box">
-            <p id="alertMsg">請填寫所有必填項目</p>
-            <button class="alert-btn" onclick="closeAlert()">好的</button>
+            <p id="alertMsg">請填寫所有必填項目<br>（標示星號 * 之欄位）</p>
+            <button class="alert-btn" onclick="closeAlert()">好</button>
         </div>
     </div>
 
@@ -676,7 +679,6 @@
         const iframe = document.getElementById('hidden_iframe');
 
         rsvpForm.addEventListener('submit', function(e) {
-            // 檢查必填項
             const requiredInputs = rsvpForm.querySelectorAll('[required]');
             let firstInvalid = null;
 
@@ -687,15 +689,12 @@
             });
 
             if (firstInvalid) {
-                e.preventDefault(); // 阻止送出
-                showAlert("請填寫所有必填項目（標示星號 * 之欄位）");
-                firstInvalid.focus();
-                // 稍微滾動讓使用者看到
-                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                e.preventDefault();
+                showAlert("請填寫所有必填項目\n（標示星號 * 之欄位）");
+                window.lastInvalidField = firstInvalid;
                 return false;
             }
 
-            // 通過檢查，開始送出
             submitBtn.disabled = true;
             submitBtn.innerText = '傳送中...';
             iframe.onload = function() { showSuccess(); };
@@ -703,12 +702,16 @@
         });
 
         function showAlert(msg) {
-            document.getElementById('alertMsg').innerText = msg;
+            document.getElementById('alertMsg').innerHTML = msg.replace('\n', '<br>');
             document.getElementById('alertModal').style.display = 'flex';
         }
 
         function closeAlert() {
             document.getElementById('alertModal').style.display = 'none';
+            if (window.lastInvalidField) {
+                window.lastInvalidField.focus();
+                window.lastInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
         function showSuccess() {
